@@ -75,10 +75,15 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
+            environment {
+                KUBECONFIG = "C:\\Users\\Logeswari\\.kube\\config"
+            }
             steps {
                 bat '''
-                kubectl apply -f k8s/deployment.yaml
-                kubectl apply -f k8s/service.yaml
+                kubectl config current-context
+                kubectl get nodes
+                kubectl apply -f k8s/deployment.yaml --validate=false
+                kubectl apply -f k8s/service.yaml --validate=false
                 '''
             }
         }
