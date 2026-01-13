@@ -76,7 +76,7 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             environment {
-                KUBECONFIG = "C:\\Users\\Logeswari\\.kube\\config"
+                KUBECONFIG = "C:\\Users\\LogeswariV\\.kube\\config"
             }
             steps {
                 bat '''
