@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE = "logeswariv/jenkins-demo"
+        IMAGE = "azuredevopsfree/jenkins-cicd-demo"
     }
 
     stages {
@@ -23,7 +23,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     bat '''
-                    "C:\\Tools\\Sonar-scanner\\sonar-scanner-8.0.1.6346-windows-x64\\bin\\sonar-scanner.bat"^
+                    "C:\\Tools\\sonar scanner\\sonar-scanner-8.0.1.6346-windows-x64\\bin\\sonar-scanner.bat"^
                     -Dsonar.projectKey=jenkins-demo ^
                     -Dsonar.sources=. ^
                     -Dsonar.host.url=http://localhost:9000 ^
@@ -36,7 +36,7 @@ pipeline {
         stage('Trivy Scan') {
             steps {
                 bat '''
-                "C:\\tools\\trivy.exe" image ^
+                "C:\\Tools\\trivy\\trivy.exe" image ^
                 --severity HIGH,CRITICAL ^
                 --exit-code 1 ^
                 %IMAGE%:latest
