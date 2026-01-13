@@ -12,6 +12,8 @@ spec:
       labels:
         app: flask
     spec:
+      imagePullSecrets:
+      - name: dockerhub-secret
       containers:
       - name: flask
         image: logeswariv/jenkins-demo:latest
