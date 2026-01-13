@@ -3,6 +3,8 @@ pipeline {
 
     environment {
         IMAGE = "logeswariv/jenkins-demo"
+        DOCKER_CLIENT_TIMEOUT = '300'
+        COMPOSE_HTTP_TIMEOUT = '300'
     }
 
     stages {
@@ -21,7 +23,7 @@ pipeline {
 
         stage('SonarQube Scan') {
             steps {
-                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                withSonarQubeEnv('sonarqube') {
                     bat '''
                     "C:\\Tools\\Sonar-scanner\\sonar-scanner-8.0.1.6346-windows-x64\\bin\\sonar-scanner.bat"^
                     -Dsonar.projectKey=jenkins-demo ^
@@ -67,15 +69,6 @@ pipeline {
         stage('Push Image') {
             steps {
                 bat 'docker push %IMAGE%:latest'
-            }
-        }
-
-        stage('Run Container (Local Test)') {
-            steps {
-                bat '''
-                docker rm -f demo 2>nul
-                docker run -d -p 8000:5000 --name demo %IMAGE%:latest
-                '''
             }
         }
 
